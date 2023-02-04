@@ -3,7 +3,6 @@
 package com.merttoptas.diaryapp.features.screen.auth.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -22,6 +21,6 @@ fun NavController.navigateAuthenticationScreen(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.authenticationScreen(navigateToHome: () -> Unit) {
     composable(route = authenticationNavigationRoute) {
-        AuthenticationScreen(hiltViewModel(), navigateToHome = navigateToHome)
+        AuthenticationScreen(navigateToHome = navigateToHome)
     }
 }
