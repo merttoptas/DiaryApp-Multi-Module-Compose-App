@@ -32,7 +32,7 @@ class AuthenticationViewModel @Inject constructor() : ViewModel() {
     private val _authState =
         MutableStateFlow<AuthenticationUiState>(value = AuthenticationUiState())
     val authState: StateFlow<AuthenticationUiState> = _authState
-    
+
 
     fun signInWithMongoAtlas(
         tokenId: String,

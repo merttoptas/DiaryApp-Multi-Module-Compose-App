@@ -10,7 +10,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import androidx.navigation.compose.rememberNavController
 import com.merttoptas.diaryapp.core.data.util.NetworkMonitor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.stateIn
 fun rememberDiaryAppState(
     networkMonitor: NetworkMonitor,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
-    navController: NavHostController = rememberAnimatedNavController()
+    navController: NavHostController = rememberNavController()
 ): DiaryAppState {
     return remember(navController, coroutineScope, networkMonitor) {
         DiaryAppState(navController, coroutineScope, networkMonitor)

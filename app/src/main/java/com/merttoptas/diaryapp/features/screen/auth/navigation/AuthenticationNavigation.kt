@@ -1,12 +1,9 @@
-@file:OptIn(ExperimentalAnimationApi::class)
-
 package com.merttoptas.diaryapp.features.screen.auth.navigation
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
-import com.google.accompanist.navigation.animation.composable
+import androidx.navigation.compose.composable
 import com.merttoptas.diaryapp.features.screen.auth.AuthenticationScreen
 
 /**
