@@ -1,7 +1,7 @@
 package com.merttoptas.diaryapp.core.data.di
 
 import com.merttoptas.diaryapp.core.data.util.ConnectivityManagerNetworkMonitor
-import com.merttoptas.diaryapp.features.diary.NetworkMonitor
+import com.merttoptas.diaryapp.core.data.util.NetworkMonitor
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

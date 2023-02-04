@@ -1,6 +1,5 @@
 package com.merttoptas.diaryapp.features.diary
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -16,6 +15,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.merttoptas.diaryapp.features.components.DiaryScaffold
 import com.merttoptas.diaryapp.features.navigation.DiaryNavHost
 import com.merttoptas.diaryapp.R
+import com.merttoptas.diaryapp.core.data.util.NetworkMonitor
 
 /**
  * Created by mertcantoptas on 04.02.2023

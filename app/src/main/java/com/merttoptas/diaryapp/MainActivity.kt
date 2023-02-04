@@ -7,8 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
+import com.merttoptas.diaryapp.core.data.util.NetworkMonitor
 import com.merttoptas.diaryapp.features.diary.DiaryApp
-import com.merttoptas.diaryapp.features.diary.NetworkMonitor
 import com.merttoptas.diaryapp.ui.theme.DiaryAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

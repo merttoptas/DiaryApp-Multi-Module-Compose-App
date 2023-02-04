@@ -31,6 +31,5 @@ fun DiaryScaffold(
         contentColor = contentColor,
         floatingActionButton = floatingActionButton,
         snackbarHost = snackbarHost,
-        contentWindowInsets = WindowInsets(0, 0, 0, 0),
     )
 }
