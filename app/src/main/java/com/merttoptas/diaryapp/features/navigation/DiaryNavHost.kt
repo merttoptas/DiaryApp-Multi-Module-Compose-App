@@ -3,16 +3,15 @@
 package com.merttoptas.diaryapp.features.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.merttoptas.diaryapp.features.components.DiaryScaffold
+import com.merttoptas.diaryapp.features.screen.auth.navigation.authenticationNavigationRoute
+import com.merttoptas.diaryapp.features.screen.auth.navigation.authenticationScreen
 
 /**
  * Created by mertcantoptas on 02.02.2023
@@ -20,21 +19,24 @@ import com.merttoptas.diaryapp.features.components.DiaryScaffold
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun DiaryApp(navController: NavHostController) {
+fun DiaryNavHost(
+    navController: NavHostController,
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    startDestination: String = authenticationNavigationRoute
+) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     val currentDestination = navController
         .currentBackStackEntryAsState().value?.destination
 
-    DiaryScaffold(
-        backgroundColor = MaterialTheme.colorScheme.background,
-    ) { innerPadding ->
-        AnimatedNavHost(
-            navController = navController,
-            startDestination = authNavigationRoute,
-            Modifier.padding(innerPadding)
-        ) {
+    AnimatedNavHost(
+        navController = navController,
+        startDestination = startDestination,
 
-        }
+    ) {
+        authenticationScreen(navigateToHome = {})
+
     }
+
 }

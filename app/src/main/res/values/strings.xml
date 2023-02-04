@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DiaryApp</string>
+    <string name="not_network_connected">Not network connected!</string>
 </resources>

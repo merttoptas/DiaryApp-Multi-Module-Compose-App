@@ -3,30 +3,30 @@ package com.merttoptas.diaryapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.merttoptas.diaryapp.features.navigation.DiaryApp
+import androidx.core.view.WindowCompat
+import com.merttoptas.diaryapp.features.diary.DiaryApp
+import com.merttoptas.diaryapp.features.diary.NetworkMonitor
 import com.merttoptas.diaryapp.ui.theme.DiaryAppTheme
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalAnimationApi::class)
+
+    @Inject
+    lateinit var networkMonitor: NetworkMonitor
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         installSplashScreen()
+        super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         setContent {
             DiaryAppTheme {
-                val navController = rememberAnimatedNavController()
-                DiaryApp(
-                    navController = navController
-                )
+                DiaryApp(networkMonitor = networkMonitor)
             }
         }
     }

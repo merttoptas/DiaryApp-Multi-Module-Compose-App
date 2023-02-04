@@ -1,6 +1,7 @@
 package com.merttoptas.diaryapp.features.components
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,12 +15,13 @@ import androidx.compose.ui.graphics.Color
 @Composable
 fun DiaryScaffold(
     modifier: Modifier = Modifier,
+    snackbarHost: @Composable () -> Unit = {},
     topBar: @Composable (() -> Unit) = {},
     bottomBar: @Composable () -> Unit = {},
     floatingActionButton: @Composable (() -> Unit) = {},
     backgroundColor: Color = MaterialTheme.colorScheme.background,
     contentColor: Color = contentColorFor(backgroundColor),
-    content: @Composable (PaddingValues) -> Unit
+    content: @Composable (PaddingValues) -> Unit,
 ) {
     Scaffold(
         modifier = modifier,
@@ -28,5 +30,7 @@ fun DiaryScaffold(
         bottomBar = bottomBar,
         contentColor = contentColor,
         floatingActionButton = floatingActionButton,
+        snackbarHost = snackbarHost,
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
     )
 }
