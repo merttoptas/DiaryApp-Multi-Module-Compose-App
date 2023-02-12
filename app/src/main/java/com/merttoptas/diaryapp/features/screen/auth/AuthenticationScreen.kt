@@ -43,7 +43,7 @@ fun AuthenticationScreen(
 ) {
 
     DiaryScaffold(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
             .statusBarsPadding()
@@ -57,9 +57,10 @@ fun AuthenticationScreen(
                         AnimatedContent(targetState = authState) { state ->
                             when (state) {
                                 is ScreenState.Loading -> Unit
-                                is ScreenState.Error -> {}
-                                is ScreenState.Success -> {
+                                is ScreenState.Error -> {
 
+                                }
+                                is ScreenState.Success -> {
                                     Content(onButtonClicked = {
                                         onTapState.open()
                                     }, isLoading)
@@ -77,11 +78,21 @@ fun AuthenticationScreen(
         clientId = Constants.CLIENT_ID,
         onTokenIdReceived = { tokenId ->
             Log.d("TOKEN", tokenId)
-            messageBarState.addSuccess("Success")
+            viewModel.signInWithMongoAtlas(
+                tokenId = tokenId,
+                onSuccess = {
+                    if (it) {
+                        messageBarState.addSuccess("Successfully logged in")
+                        //navigateToHome()
+                    }
+                },
+                onError = {
+                    messageBarState.addError(it)
+                }
+            )
         },
         onDialogDismissed = { message ->
             messageBarState.addError(Exception(message))
-
         })
 }
 
