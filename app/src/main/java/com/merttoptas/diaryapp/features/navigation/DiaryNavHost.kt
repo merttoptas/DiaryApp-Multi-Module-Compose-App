@@ -7,7 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.merttoptas.diaryapp.features.screen.auth.navigation.authenticationNavigationRoute
-import com.merttoptas.diaryapp.features.screen.auth.navigation.authenticationScreen
+import com.merttoptas.diaryapp.features.screen.auth.navigation.authenticationRoute
 
 /**
  * Created by mertcantoptas on 02.02.2023
@@ -26,7 +26,7 @@ fun DiaryNavHost(
         navController = navController,
         startDestination = startDestination,
     ) {
-        authenticationScreen(navigateToHome = {})
+        authenticationRoute(navigateToHome = {}, modifier = modifier)
     }
 
 }

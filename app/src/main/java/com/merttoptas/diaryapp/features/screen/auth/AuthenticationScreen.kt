@@ -2,6 +2,7 @@
 
 package com.merttoptas.diaryapp.features.screen.auth
 
+import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
@@ -10,18 +11,21 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.merttoptas.diaryapp.domain.state.ScreenState
-import com.merttoptas.diaryapp.features.components.DiaryScaffold
 import com.merttoptas.diaryapp.R
+import com.merttoptas.diaryapp.domain.state.ScreenState
 import com.merttoptas.diaryapp.features.components.DiaryGoogleButton
+import com.merttoptas.diaryapp.features.components.DiaryScaffold
+import com.merttoptas.diaryapp.features.components.snackbarmessage.CustomMessageBar
+import com.merttoptas.diaryapp.features.components.snackbarmessage.MessageBarPosition
+import com.merttoptas.diaryapp.features.components.snackbarmessage.MessageBarState
+import com.merttoptas.diaryapp.util.Constants
+import com.stevdzasan.onetap.OneTapSignInState
+import com.stevdzasan.onetap.OneTapSignInWithGoogle
 
 /**
  * Created by mertcantoptas on 02.02.2023
@@ -29,11 +33,14 @@ import com.merttoptas.diaryapp.features.components.DiaryGoogleButton
 
 @Composable
 fun AuthenticationScreen(
-    viewModel: AuthenticationViewModel = hiltViewModel(),
-    navigateToHome: () -> Unit
+    modifier: Modifier,
+    viewModel: AuthenticationViewModel,
+    navigateToHome: () -> Unit,
+    messageBarState: MessageBarState,
+    authState: ScreenState<AuthenticationUiState>,
+    onTapState: OneTapSignInState,
+    isLoading: Boolean
 ) {
-    val authState by viewModel.screenState.collectAsStateWithLifecycle()
-    val isLoading = authState is ScreenState.Loading
 
     DiaryScaffold(
         modifier = Modifier
@@ -42,19 +49,40 @@ fun AuthenticationScreen(
             .statusBarsPadding()
             .navigationBarsPadding(),
         content = {
-            Box(modifier = Modifier.fillMaxSize()) {
-                AnimatedContent(targetState = authState) { state ->
-                    when (state) {
-                        is ScreenState.Loading -> Unit
-                        is ScreenState.Error -> {}
-                        is ScreenState.Success -> {
-                            Content(onButtonClicked = {}, isLoading)
+            CustomMessageBar(
+                messageBarState = messageBarState,
+                position = MessageBarPosition.TOP,
+                content = {
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        AnimatedContent(targetState = authState) { state ->
+                            when (state) {
+                                is ScreenState.Loading -> Unit
+                                is ScreenState.Error -> {}
+                                is ScreenState.Success -> {
+
+                                    Content(onButtonClicked = {
+                                        onTapState.open()
+                                    }, isLoading)
+                                }
+                            }
                         }
                     }
                 }
-            }
+            )
         }
     )
+
+    OneTapSignInWithGoogle(
+        state = onTapState,
+        clientId = Constants.CLIENT_ID,
+        onTokenIdReceived = { tokenId ->
+            Log.d("TOKEN", tokenId)
+            messageBarState.addSuccess("Success")
+        },
+        onDialogDismissed = { message ->
+            messageBarState.addError(Exception(message))
+
+        })
 }
 
 @Composable
