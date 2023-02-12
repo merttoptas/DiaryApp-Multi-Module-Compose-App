@@ -118,8 +118,6 @@ dependencies {
     // Pager
     implementation "com.google.accompanist:accompanist-pager:0.28.0"
 
-    // Message Bar Compose
-    implementation "com.github.stevdza-san:MessageBarCompose:1.0.5"
 
     // One-Tap Compose
     implementation "com.github.stevdza-san:OneTapCompose:1.0.0"
