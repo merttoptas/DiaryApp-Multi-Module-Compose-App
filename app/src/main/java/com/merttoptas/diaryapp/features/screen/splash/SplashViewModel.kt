@@ -1,22 +1,16 @@
 package com.merttoptas.diaryapp.features.screen.splash
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.merttoptas.diaryapp.domain.state.ScreenState
 import com.merttoptas.diaryapp.domain.usecase.splash.SplashUseCase
-import com.merttoptas.diaryapp.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.realm.kotlin.mongodb.App
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.launch
-import java.util.concurrent.ThreadPoolExecutor.DiscardPolicy
 import javax.inject.Inject
 
 /**
@@ -34,9 +28,9 @@ class SplashViewModel @Inject constructor(private val splashUseCase: SplashUseCa
         )
     val screenState: StateFlow<ScreenState<SplashUiState>> = _screenState
 
-    private val _authState =
+    private val _splashState =
         MutableStateFlow(value = SplashUiState())
-    val authState: StateFlow<SplashUiState> = _authState
+    val splashState: StateFlow<SplashUiState> = _splashState
 
     init {
         checkUser()
@@ -46,9 +40,7 @@ class SplashViewModel @Inject constructor(private val splashUseCase: SplashUseCa
         viewModelScope.launch(Dispatchers.IO) {
             delay(1500)
             splashUseCase.invoke().last().let { uiState ->
-                Log.d("deneme1", "uiState: $uiState")
-                _authState.value = uiState
-
+                _splashState.value = uiState
             }
         }
     }

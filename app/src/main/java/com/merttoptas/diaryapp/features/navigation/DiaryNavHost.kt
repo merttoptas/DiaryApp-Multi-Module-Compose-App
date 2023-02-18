@@ -9,6 +9,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.merttoptas.diaryapp.features.screen.auth.navigation.authenticationNavigationRoute
 import com.merttoptas.diaryapp.features.screen.auth.navigation.authenticationRoute
 import com.merttoptas.diaryapp.features.screen.auth.navigation.navigateAuthenticationScreen
+import com.merttoptas.diaryapp.features.screen.home.navigation.homeRoute
+import com.merttoptas.diaryapp.features.screen.home.navigation.navigateHomeScreen
 import com.merttoptas.diaryapp.features.screen.splash.navigation.splashNavigationRoute
 import com.merttoptas.diaryapp.features.screen.splash.navigation.splashRoute
 
@@ -32,11 +34,13 @@ fun DiaryNavHost(
         splashRoute(
             modifier = modifier,
             navigateToHome = {
-                navController.navigateAuthenticationScreen()
+                navController.navigateHomeScreen()
             },
             navigateToAuthentication = { navController.navigateAuthenticationScreen() }
         )
         authenticationRoute(navigateToHome = {}, modifier = modifier)
+        homeRoute(
+            modifier = modifier,
+            navigateToAuthentication = { navController.navigateAuthenticationScreen() })
     }
-
 }

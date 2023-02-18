@@ -25,13 +25,12 @@ fun NavGraphBuilder.splashRoute(
     composable(route = splashNavigationRoute) {
         val viewModel = hiltViewModel<SplashViewModel>()
         val screenState by viewModel.screenState.collectAsStateWithLifecycle()
-        val uiState by viewModel.authState.collectAsStateWithLifecycle()
-        val someUIState by viewModel.authState.collectAsState()
+        val splashUiState by viewModel.splashState.collectAsState()
 
-        LaunchedEffect(someUIState) {
-            if (uiState.navigateToHome) {
+        LaunchedEffect(splashUiState) {
+            if (splashUiState.navigateToHome) {
                 navigateToHome()
-            } else if (uiState.navigateToLogin) {
+            } else if (splashUiState.navigateToLogin) {
                 navigateToAuthentication()
             }
         }
