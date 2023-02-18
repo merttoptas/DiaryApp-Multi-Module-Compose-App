@@ -6,4 +6,5 @@ package com.merttoptas.diaryapp.features.screen.auth
 
 data class AuthenticationUiState(
     val authenticated : Boolean = false,
+    val isLoading: Boolean = false,
 )

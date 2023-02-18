@@ -24,16 +24,15 @@ fun NavController.navigateAuthenticationScreen(navOptions: NavOptions? = null) {
     this.navigate(authenticationNavigationRoute, navOptions)
 }
 
-
 fun NavGraphBuilder.authenticationRoute(
     modifier: Modifier,
     navigateToHome: () -> Unit,
 ) {
-
     composable(route = authenticationNavigationRoute) {
         val viewModel = hiltViewModel<AuthenticationViewModel>()
-        val authState by viewModel.screenState.collectAsStateWithLifecycle()
-        val isLoading = authState is ScreenState.Loading
+        val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+        val authState by viewModel.authState.collectAsStateWithLifecycle()
+        val isLoading = authState.isLoading
         val onTapState = rememberOneTapSignInState()
         val messageBarState = rememberMessageBarState()
 
@@ -42,7 +41,7 @@ fun NavGraphBuilder.authenticationRoute(
             viewModel = viewModel,
             navigateToHome = navigateToHome,
             messageBarState = messageBarState,
-            authState = authState,
+            authState = screenState,
             onTapState = onTapState,
             isLoading = isLoading
         )

@@ -56,12 +56,11 @@ fun AuthenticationScreen(
                         AnimatedContent(targetState = authState) { state ->
                             when (state) {
                                 is ScreenState.Loading -> Unit
-                                is ScreenState.Error -> {
-
-                                }
+                                is ScreenState.Error -> Unit
                                 is ScreenState.Success -> {
                                     Content(onButtonClicked = {
                                         onTapState.open()
+                                        viewModel.setLoading(true)
                                     }, isLoading)
                                 }
                             }

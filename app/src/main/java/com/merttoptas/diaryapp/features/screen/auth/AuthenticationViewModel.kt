@@ -26,7 +26,7 @@ class AuthenticationViewModel @Inject constructor() : ViewModel() {
     private val _screenState =
         MutableStateFlow<ScreenState<AuthenticationUiState>>(
             value = ScreenState.Success(
-                AuthenticationUiState()
+                    AuthenticationUiState()
             )
         )
     val screenState: StateFlow<ScreenState<AuthenticationUiState>> = _screenState
@@ -35,7 +35,6 @@ class AuthenticationViewModel @Inject constructor() : ViewModel() {
         MutableStateFlow(value = AuthenticationUiState())
     val authState: StateFlow<AuthenticationUiState> = _authState
 
-
     fun signInWithMongoAtlas(
         tokenId: String,
         onSuccess: (Boolean) -> Unit,
@@ -43,7 +42,9 @@ class AuthenticationViewModel @Inject constructor() : ViewModel() {
     ) {
         viewModelScope.launch {
             try {
-                _screenState.value = ScreenState.Loading
+                _screenState.value = ScreenState.Success(
+                    _authState.value.copy(isLoading = true)
+                )
                 val result = withContext(Dispatchers.IO) {
                     App.create(Constants.APP_ID).login(
                         Credentials.jwt(tokenId)
@@ -53,7 +54,7 @@ class AuthenticationViewModel @Inject constructor() : ViewModel() {
                     if (result) {
                         delay(600)
                         _screenState.value = ScreenState.Success(
-                            _authState.value.copy(authenticated = true)
+                            _authState.value.copy(authenticated = true, isLoading = false)
                         )
                         onSuccess(true)
                     } else {
@@ -67,6 +68,10 @@ class AuthenticationViewModel @Inject constructor() : ViewModel() {
             }
         }
     }
+
+    fun setLoading(value: Boolean) {
+        _screenState.value = ScreenState.Success(
+            _authState.value.copy(isLoading = value)
+        )
+    }
 }
-
-
