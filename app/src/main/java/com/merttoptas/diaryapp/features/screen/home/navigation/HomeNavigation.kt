@@ -10,7 +10,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.merttoptas.diaryapp.features.screen.home.HomeScreen
-import com.merttoptas.diaryapp.features.screen.home.HomeViewEvent
 import com.merttoptas.diaryapp.features.screen.home.HomeViewModel
 import kotlinx.coroutines.launch
 
@@ -30,13 +29,12 @@ fun NavGraphBuilder.homeRoute(
     composable(route = homeNavigationRoute) {
         val viewModel = hiltViewModel<HomeViewModel>()
         val screenState by viewModel.screenState.collectAsStateWithLifecycle()
-        val homeUiState by viewModel.homeState.collectAsStateWithLifecycle()
 
-        LaunchedEffect(viewModel.viewEvent) {
+        LaunchedEffect(viewModel.homeState) {
             launch {
-                viewModel.viewEvent.collect {
-                    when (it) {
-                        is HomeViewEvent.Logout -> navigateToAuthentication()
+                viewModel.homeState.collect {
+                    if (it.navigateToLogout) {
+                        navigateToAuthentication()
                     }
                 }
             }

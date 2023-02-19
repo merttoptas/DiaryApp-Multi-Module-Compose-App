@@ -38,7 +38,10 @@ fun DiaryNavHost(
             },
             navigateToAuthentication = { navController.navigateAuthenticationScreen() }
         )
-        authenticationRoute(navigateToHome = {}, modifier = modifier)
+        authenticationRoute(
+            navigateToHome = { navController.navigateHomeScreen() },
+            modifier = modifier
+        )
         homeRoute(
             modifier = modifier,
             navigateToAuthentication = { navController.navigateAuthenticationScreen() })

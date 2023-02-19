@@ -7,10 +7,7 @@ import com.merttoptas.diaryapp.util.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.realm.kotlin.mongodb.App
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,22 +30,16 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         MutableStateFlow(value = HomeUiState())
     val homeState: StateFlow<HomeUiState> = _homeState
 
-    private val _viewEvent = MutableSharedFlow<HomeViewEvent>()
-    val viewEvent: SharedFlow<HomeViewEvent> = _viewEvent
-
 
     fun logout() {
         viewModelScope.launch(Dispatchers.IO) {
             App.create(Constants.APP_ID).currentUser?.logOut()
-            _viewEvent.emit(HomeViewEvent.Logout)
+            _homeState.update { it.copy(navigateToLogout = true) }
         }
     }
 }
 
 data class HomeUiState(
-   val isLoading : Boolean = false
+    val isLoading: Boolean = false,
+    val navigateToLogout: Boolean = false,
 )
-
-sealed interface HomeViewEvent {
-    object Logout : HomeViewEvent
-}

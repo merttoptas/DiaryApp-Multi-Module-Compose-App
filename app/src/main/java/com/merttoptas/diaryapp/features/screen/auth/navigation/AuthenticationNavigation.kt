@@ -1,5 +1,6 @@
 package com.merttoptas.diaryapp.features.screen.auth.navigation
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -13,6 +14,7 @@ import com.merttoptas.diaryapp.features.components.snackbarmessage.rememberMessa
 import com.merttoptas.diaryapp.features.screen.auth.AuthenticationScreen
 import com.merttoptas.diaryapp.features.screen.auth.AuthenticationViewModel
 import com.stevdzasan.onetap.rememberOneTapSignInState
+import kotlinx.coroutines.launch
 
 /**
  * Created by mertcantoptas on 03.02.2023
@@ -36,10 +38,19 @@ fun NavGraphBuilder.authenticationRoute(
         val onTapState = rememberOneTapSignInState()
         val messageBarState = rememberMessageBarState()
 
+        LaunchedEffect(viewModel.authState) {
+            launch {
+                viewModel.authState.collect {
+                    if (it.authenticated) {
+                        navigateToHome()
+                    }
+                }
+            }
+        }
+
         AuthenticationScreen(
             modifier = modifier,
             viewModel = viewModel,
-            navigateToHome = navigateToHome,
             messageBarState = messageBarState,
             authState = screenState,
             onTapState = onTapState,

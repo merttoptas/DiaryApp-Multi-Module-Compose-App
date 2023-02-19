@@ -34,7 +34,6 @@ import com.stevdzasan.onetap.OneTapSignInWithGoogle
 fun AuthenticationScreen(
     modifier: Modifier,
     viewModel: AuthenticationViewModel,
-    navigateToHome: () -> Unit,
     messageBarState: MessageBarState,
     authState: ScreenState<AuthenticationUiState>,
     onTapState: OneTapSignInState,
@@ -81,16 +80,18 @@ fun AuthenticationScreen(
                 onSuccess = {
                     if (it) {
                         messageBarState.addSuccess("Successfully logged in")
-                        //navigateToHome()
+                        viewModel.setLoading(false)
                     }
                 },
                 onError = {
                     messageBarState.addError(it)
+                    viewModel.setLoading(false)
                 }
             )
         },
         onDialogDismissed = { message ->
             messageBarState.addError(Exception(message))
+            viewModel.setLoading(false)
         })
 }
 

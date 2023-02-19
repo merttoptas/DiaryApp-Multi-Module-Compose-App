@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -26,7 +27,7 @@ class AuthenticationViewModel @Inject constructor() : ViewModel() {
     private val _screenState =
         MutableStateFlow<ScreenState<AuthenticationUiState>>(
             value = ScreenState.Success(
-                    AuthenticationUiState()
+                AuthenticationUiState()
             )
         )
     val screenState: StateFlow<ScreenState<AuthenticationUiState>> = _screenState
@@ -42,9 +43,6 @@ class AuthenticationViewModel @Inject constructor() : ViewModel() {
     ) {
         viewModelScope.launch {
             try {
-                _screenState.value = ScreenState.Success(
-                    _authState.value.copy(isLoading = true)
-                )
                 val result = withContext(Dispatchers.IO) {
                     App.create(Constants.APP_ID).login(
                         Credentials.jwt(tokenId)
@@ -52,11 +50,9 @@ class AuthenticationViewModel @Inject constructor() : ViewModel() {
                 }
                 withContext(Dispatchers.Main) {
                     if (result) {
-                        delay(600)
-                        _screenState.value = ScreenState.Success(
-                            _authState.value.copy(authenticated = true, isLoading = false)
-                        )
                         onSuccess(true)
+                        delay(600)
+                        _authState.update { it.copy(isLoading = false, authenticated = true) }
                     } else {
                         onError(Exception("User is not logged in."))
                     }
@@ -70,8 +66,6 @@ class AuthenticationViewModel @Inject constructor() : ViewModel() {
     }
 
     fun setLoading(value: Boolean) {
-        _screenState.value = ScreenState.Success(
-            _authState.value.copy(isLoading = value)
-        )
+        _authState.update { it.copy(isLoading = value) }
     }
 }
