@@ -78,10 +78,8 @@ fun AuthenticationScreen(
             viewModel.signInWithMongoAtlas(
                 tokenId = tokenId,
                 onSuccess = {
-                    if (it) {
-                        messageBarState.addSuccess("Successfully logged in")
-                        viewModel.setLoading(false)
-                    }
+                    messageBarState.addSuccess("Successfully logged in")
+                    viewModel.setLoading(false)
                 },
                 onError = {
                     messageBarState.addError(it)

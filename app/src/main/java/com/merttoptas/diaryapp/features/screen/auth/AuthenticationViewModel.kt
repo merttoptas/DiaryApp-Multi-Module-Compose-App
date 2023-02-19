@@ -38,7 +38,7 @@ class AuthenticationViewModel @Inject constructor() : ViewModel() {
 
     fun signInWithMongoAtlas(
         tokenId: String,
-        onSuccess: (Boolean) -> Unit,
+        onSuccess: () -> Unit,
         onError: (Exception) -> Unit
     ) {
         viewModelScope.launch {
@@ -50,7 +50,7 @@ class AuthenticationViewModel @Inject constructor() : ViewModel() {
                 }
                 withContext(Dispatchers.Main) {
                     if (result) {
-                        onSuccess(true)
+                        onSuccess()
                         delay(600)
                         _authState.update { it.copy(isLoading = false, authenticated = true) }
                     } else {
