@@ -3,11 +3,11 @@ package com.merttoptas.diaryapp.features.screen.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.merttoptas.diaryapp.domain.state.ScreenState
-import com.merttoptas.diaryapp.util.Constants
+import com.merttoptas.diaryapp.domain.usecase.login.LogoutUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.realm.kotlin.mongodb.App
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,7 +16,7 @@ import javax.inject.Inject
  */
 
 @HiltViewModel
-class HomeViewModel @Inject constructor() : ViewModel() {
+class HomeViewModel @Inject constructor(private val logoutUseCase: LogoutUseCase) : ViewModel() {
 
     private val _screenState =
         MutableStateFlow<ScreenState<HomeUiState>>(
@@ -32,14 +32,23 @@ class HomeViewModel @Inject constructor() : ViewModel() {
 
 
     fun logout() {
-        viewModelScope.launch(Dispatchers.IO) {
-            App.create(Constants.APP_ID).currentUser?.logOut()
-            _homeState.update { it.copy(navigateToLogout = true) }
+        viewModelScope.launch {
+            logoutUseCase.invoke().collect {
+                _homeState.update { it.copy(navigateToLogout = true) }
+            }
         }
+    }
+    fun onDisplayValueChange(isDisplay: Boolean) {
+        _homeState.update { it.copy(isDialogDisplay = isDisplay) }
+    }
+
+    fun onDismissDialog() {
+        _homeState.update { it.copy(isDialogDisplay = false) }
     }
 }
 
 data class HomeUiState(
     val isLoading: Boolean = false,
     val navigateToLogout: Boolean = false,
+    val isDialogDisplay: Boolean = false
 )
