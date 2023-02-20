@@ -2,6 +2,8 @@ package com.merttoptas.diaryapp.features.components
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -24,7 +26,9 @@ fun DiaryScaffold(
     content: @Composable (PaddingValues) -> Unit,
 ) {
     Scaffold(
-        modifier = modifier,
+        modifier = modifier
+            .statusBarsPadding()
+            .navigationBarsPadding(),
         topBar = topBar,
         content = content,
         bottomBar = bottomBar,

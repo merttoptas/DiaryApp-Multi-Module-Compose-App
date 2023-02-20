@@ -39,13 +39,10 @@ fun AuthenticationScreen(
     onTapState: OneTapSignInState,
     isLoading: Boolean
 ) {
-
     DiaryScaffold(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
-            .statusBarsPadding()
-            .navigationBarsPadding(),
+            .background(MaterialTheme.colorScheme.surface),
         content = {
             CustomMessageBar(
                 messageBarState = messageBarState,
