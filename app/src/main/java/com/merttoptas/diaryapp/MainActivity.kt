@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
+import com.merttoptas.diaryapp.core.data.repository.MongoDB
 import com.merttoptas.diaryapp.core.data.util.NetworkMonitor
 import com.merttoptas.diaryapp.features.diary.DiaryApp
 import com.merttoptas.diaryapp.ui.theme.DiaryAppTheme
@@ -23,6 +24,7 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
+      //  MongoDB.configureTheRealm()
 
         setContent {
             DiaryAppTheme {

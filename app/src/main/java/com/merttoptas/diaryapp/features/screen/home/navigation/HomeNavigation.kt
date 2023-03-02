@@ -21,6 +21,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.merttoptas.diaryapp.R
+import com.merttoptas.diaryapp.core.data.repository.MongoDB
 import com.merttoptas.diaryapp.features.components.DiaryAlertDialog
 import com.merttoptas.diaryapp.features.components.DiaryButton
 import com.merttoptas.diaryapp.features.screen.home.HomeScreen
@@ -55,6 +56,10 @@ fun NavGraphBuilder.homeRoute(
                     }
                 }
             }
+        }
+        
+        LaunchedEffect(key1 =Unit){
+         MongoDB.configureTheRealm()
         }
 
         HomeScreen(
