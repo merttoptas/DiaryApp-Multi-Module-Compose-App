@@ -33,6 +33,7 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+        coreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = '1.8'
@@ -108,7 +109,6 @@ dependencies {
     kapt "com.google.dagger:hilt-compiler:2.44.2"
     implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
 
-
     // Google Auth
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
 
@@ -117,7 +117,6 @@ dependencies {
 
     // Pager
     implementation "com.google.accompanist:accompanist-pager:0.28.0"
-
 
     // One-Tap Compose
     implementation "com.github.stevdza-san:OneTapCompose:1.0.0"
@@ -133,8 +132,6 @@ dependencies {
     androidTestImplementation "androidx.test:core:1.5.0"
     // Kotlin extensions for androidx.test.core
     androidTestImplementation "androidx.test:core-ktx:1.5.0"
-
-    testImplementation "androidx.test:espresso:espresso-core:3.5.1"
 
     // To use the JUnit Extension APIs
     testImplementation "androidx.test.ext:junit:1.1.5"
