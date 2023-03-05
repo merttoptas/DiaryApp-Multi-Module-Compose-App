@@ -2,6 +2,7 @@ package com.merttoptas.diaryapp.features.screen.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.merttoptas.diaryapp.core.data.repository.MongoRepository
 import com.merttoptas.diaryapp.domain.state.ScreenState
 import com.merttoptas.diaryapp.domain.usecase.login.LogoutUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +17,10 @@ import javax.inject.Inject
  */
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val logoutUseCase: LogoutUseCase) : ViewModel() {
+class HomeViewModel @Inject constructor(
+    private val logoutUseCase: LogoutUseCase,
+    private val mongoRepository: MongoRepository
+) : ViewModel() {
 
     private val _screenState =
         MutableStateFlow<ScreenState<HomeUiState>>(
@@ -38,12 +42,19 @@ class HomeViewModel @Inject constructor(private val logoutUseCase: LogoutUseCase
             }
         }
     }
+
     fun onDisplayValueChange(isDisplay: Boolean) {
         _homeState.update { it.copy(isDialogDisplay = isDisplay) }
     }
 
     fun onDismissDialog() {
         _homeState.update { it.copy(isDialogDisplay = false) }
+    }
+
+    fun setConfigureTheRealm() {
+        viewModelScope.launch {
+            mongoRepository.configureTheRealm()
+        }
     }
 }
 
