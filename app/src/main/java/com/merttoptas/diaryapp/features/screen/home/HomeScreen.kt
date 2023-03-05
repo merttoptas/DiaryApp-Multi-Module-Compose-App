@@ -1,7 +1,12 @@
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package com.merttoptas.diaryapp.features.screen.home
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
@@ -13,11 +18,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.merttoptas.diaryapp.core.data.model.Diary
 import com.merttoptas.diaryapp.domain.state.ScreenState
-import com.merttoptas.diaryapp.features.components.DiaryButton
-import com.merttoptas.diaryapp.features.components.DiaryScaffold
-import com.merttoptas.diaryapp.features.components.DiaryTopAppBar
+import com.merttoptas.diaryapp.features.components.*
+import java.time.LocalDate
 
 /**
  * Created by mertcantoptas on 18.02.2023
@@ -47,7 +54,7 @@ fun HomeScreen(
                 when (screenState) {
                     is ScreenState.Loading -> Unit
                     is ScreenState.Success -> {
-                        Content(onLogoutClicked)
+                        Content(mapOf(), {})
                     }
                     is ScreenState.Error -> {
                         //TODO: Handle error
@@ -59,11 +66,53 @@ fun HomeScreen(
 }
 
 @Composable
-private fun Content(logout: () -> Unit) {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            DiaryButton(text = "Logout", onClick = logout)
+private fun Content(
+    diaryNotes: Map<LocalDate, List<Diary>>,
+    onClick: (String) -> Unit
+) {
+    if (diaryNotes.isNotEmpty()) {
+        LazyColumn(modifier = Modifier.padding(horizontal = 24.dp)) {
+            diaryNotes.forEach { (localDate, diaries) ->
+                stickyHeader(key = localDate) {
+                    DiaryDateHeader(localDate = localDate)
+                }
+                items(items = diaries, key = { it._id }) {
+                    DiaryHolder(diary = it, onClick = onClick)
+                }
+            }
         }
+    } else {
+        EmptyPage()
+    }
+}
+
+@Composable
+fun EmptyPage(
+    title: String = "Empty Diary",
+    subtitle: String = "Write Something"
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(all = 24.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        DiaryEmptyPageAnimation()
+        Text(
+            text = title,
+            style = TextStyle(
+                fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                fontWeight = FontWeight.Medium
+            )
+        )
+        Text(
+            text = subtitle,
+            style = TextStyle(
+                fontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                fontWeight = FontWeight.Normal
+            )
+        )
     }
 }
 
