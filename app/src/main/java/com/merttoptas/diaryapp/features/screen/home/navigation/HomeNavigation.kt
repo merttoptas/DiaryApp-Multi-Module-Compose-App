@@ -47,7 +47,6 @@ fun NavGraphBuilder.homeRoute(
                     }
                 }
             }
-            viewModel.setConfigureTheRealm()
         }
 
         HomeScreen(
@@ -61,7 +60,8 @@ fun NavGraphBuilder.homeRoute(
                 scope.launch {
                     drawerState.open()
                 }
-            }
+            },
+            diaryNotes = homeUiState.diaries
         )
 
         if (homeUiState.isDialogDisplay) {

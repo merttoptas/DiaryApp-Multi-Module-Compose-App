@@ -36,7 +36,8 @@ fun HomeScreen(
     screenState: ScreenState<HomeUiState>,
     onLogoutClicked: () -> Unit,
     drawerState: DrawerState,
-    onMenuClicked: () -> Unit
+    onMenuClicked: () -> Unit,
+    diaryNotes: Map<LocalDate, List<Diary>>,
 ) {
     HomeDrawerMenu(drawerState = drawerState, onSignOutClick = onLogoutClicked) {
         DiaryScaffold(
@@ -52,9 +53,9 @@ fun HomeScreen(
         ) {
             Box(modifier = modifier.fillMaxSize()) {
                 when (screenState) {
-                    is ScreenState.Loading -> Unit
+                    is ScreenState.Loading -> DiaryLoadingAnimation()
                     is ScreenState.Success -> {
-                        Content(mapOf(), {})
+                        Content(diaryNotes, {})
                     }
                     is ScreenState.Error -> {
                         //TODO: Handle error
