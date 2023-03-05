@@ -96,10 +96,10 @@ dependencies {
     // Splash Api
     implementation 'androidx.core:core-splashscreen:1.0.0'
 
-    // Mongo Db
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4") {
+    // Mongo DB Realm
+    implementation ('org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4') {
         version {
-            strictly("1.6.4")
+            strictly("1.6.0-native-mt")
         }
     }
     implementation "io.realm.kotlin:library-sync:1.0.2"
@@ -146,6 +146,10 @@ dependencies {
     testImplementation "androidx.test.uiautomator:uiautomator:2.3.0-alpha02"
     // CALENDAR
     implementation "com.maxkeppeler.sheets-compose-dialogs:calendar:1.0.2"
+
+
+    //Lottie
+    implementation "com.airbnb.android:lottie-compose:4.2.2"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
